@@ -52,11 +52,7 @@ contract NFTMarketPlace is ReentrancyGuard {
     mapping(address => uint256) private s_balance;
 
     // Modifiers //
-    modifier notListed(
-        address nftAddress,
-        uint256 tokenID,
-        address owner
-    ) {
+    modifier notListed(address nftAddress, uint256 tokenID) {
         Listing memory listing = s_listings[nftAddress][tokenID];
         if (listing.price > 0) {
             revert NFTMarketPlace__AlreadyListed(nftAddress, tokenID);
@@ -98,7 +94,7 @@ contract NFTMarketPlace is ReentrancyGuard {
         uint256 price
     )
         external
-        notListed(nftAddress, tokenID, msg.sender)
+        notListed(nftAddress, tokenID)
         isOwner(nftAddress, tokenID, msg.sender)
     {
         if (price <= 0) {
